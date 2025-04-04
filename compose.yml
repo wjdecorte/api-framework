@@ -1,0 +1,44 @@
+services:
+
+  postgres:
+    image: postgres
+    container_name: testapi_postgres_1
+    environment:
+      - POSTGRES_USER=testapi
+      - POSTGRES_PASSWORD=testapi
+      - POSTGRES_DB=testapi
+      - PGPORT=5432
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+        - ./pgdata:/var/lib/postgresql/data/pgdata
+    ports:
+      - "5440:5432"
+    networks:
+      - local-test-net
+
+  api:
+    image: testapi
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./testapi:/app/testapi
+#      - ~/.aws:/home/appuser/.aws
+    networks:
+      - local-test-net
+    ports:
+      - "8282:9000"
+    environment:
+      AWS_DEFAULT_REGION: "us-east-1"
+      WORKERS: 1
+      API_LOG_TYPE: "standard"
+      DEBUG_MODE: True
+      DATABASE_URL: "postgresql+psycopg2://testapi:{pswd}@testapi_postgres_1:5432/testapi"
+      DATABASE_PASSWORD: testapi
+    command: gunicorn --timeout 60 --config testapi/gunicorn_config.py 'testapi.app:app' --reload
+
+networks:
+  local-test-net:
+    name: local-test-net
+    driver: bridge
+    external: true

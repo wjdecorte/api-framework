@@ -1,0 +1,45 @@
+[project]
+name = "testapi"
+version = "0.1.0"
+description = "A Common API framework"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "case-converter==1.*",
+    "alembic==1.*",
+    "fastapi==0.*",
+    "gunicorn==23.*",
+    "psycopg2-binary==2.*",
+    "pydantic-settings==2.*",
+    "sqlmodel==0.*",
+    "uvicorn-worker==0.*",
+    "httpx==0.*",
+    "jsonformatter==0.*",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+dev-dependencies  = [
+    "pytest==8.*",
+    "toml==0.*",
+    "pytest-cov==6.*",
+    "testcontainers==4.*",
+    "pytest-asyncio==0.*",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+
+[tool.coverage.run]
+omit = [
+    "*/migrations/*",
+    "testapi/app.py",
+    "testapi/gunicorn_config.py",
+    "testapi/exceptions.py",
+    "testapi/common/middleware.py",
+    "*/site-packages/*"
+]
