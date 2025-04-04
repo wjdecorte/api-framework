@@ -3,15 +3,15 @@ name: Deploy to Amazon ECS
 on:
   push:
     branches:
-      - master
+      - <branch_name>
 
 env:
   AWS_REGION: us-east-1
-  ECR_REPOSITORY: barrel-api
-  ECS_SERVICE: "workflows-api-dev-service"
-  ECS_CLUSTER: "barrel2-dev-cluster"
-  CONTAINER_NAME: "workflows-api-service"
-  TASK_FAMILY_NAME: "workflows-api-dev-task"
+  ECR_REPOSITORY: test-api
+  ECS_SERVICE: "test-api-dev-service"
+  ECS_CLUSTER: "<cluster_name>"
+  CONTAINER_NAME: "test-api-service"
+  TASK_FAMILY_NAME: "test-api-dev-task"
 
 jobs:
   deploy:
@@ -84,8 +84,8 @@ jobs:
           cluster: ${{ env.ECS_CLUSTER }}
           wait-for-service-stability: true
 
-      - name: Sync to S3
-        run:  |
-              a=$(date +%Y%m%d%H%M%S).zip
-              zip -r $a . -x '/.git*' '/.github/*' '/aws/*' '/awscliv2.zip*'
-              aws s3 sync . ${{ secrets.BACKUP_S3_BUCKET}} --exclude "*" --include "$a"
+#      - name: Sync to S3
+#        run:  |
+#              a=$(date +%Y%m%d%H%M%S).zip
+#              zip -r $a . -x '/.git*' '/.github/*' '/aws/*' '/awscliv2.zip*'
+#              aws s3 sync . ${{ secrets.BACKUP_S3_BUCKET}} --exclude "*" --include "$a"
