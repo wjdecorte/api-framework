@@ -5,13 +5,8 @@ from sqlalchemy.schema import CreateSchema
 from sqlmodel import SQLModel
 from alembic import context
 
-from testapi import app_settings
-from testapi.workflows.models import (  # noqa
-    Workflow,
-    WorkflowStep,
-    WorkflowInput,
-)
-
+from api_framework import app_settings
+from api_framework.user.models import User, UserAddress  # noqa
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -55,7 +50,7 @@ def run_migrations_offline() -> None:
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
-        version_table_schema="workflow",
+        version_table_schema=app_settings.database_default_schema,
     )
 
     with context.begin_transaction():
@@ -79,10 +74,12 @@ def run_migrations_online() -> None:
         context.configure(
             connection=connection,
             target_metadata=target_metadata,
-            version_table_schema="workflow",
+            version_table_schema=app_settings.database_default_schema,
         )
 
-        connection.execute(CreateSchema(name="workflow", if_not_exists=True))
+        connection.execute(
+            CreateSchema(name=app_settings.database_default_schema, if_not_exists=True)
+        )
 
         with context.begin_transaction():
             context.run_migrations()

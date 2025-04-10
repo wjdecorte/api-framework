@@ -1,5 +1,5 @@
 [project]
-name = "testapi"
+name = "api-framework"
 version = "0.1.0"
 description = "A Common API framework"
 readme = "README.md"
@@ -37,9 +37,9 @@ asyncio_default_fixture_loop_scope = "function"
 [tool.coverage.run]
 omit = [
     "*/migrations/*",
-    "testapi/app.py",
-    "testapi/gunicorn_config.py",
-    "testapi/exceptions.py",
-    "testapi/common/middleware.py",
+    "api_framework/app.py",
+    "api_framework/gunicorn_config.py",
+    "api_framework/exceptions.py",
+    "api_framework/common/middleware.py",
     "*/site-packages/*"
 ]

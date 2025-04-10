@@ -1,8 +1,8 @@
-from testapi.common.exceptions import (
+from api_framework.common.exceptions import (
     WorkflowDoesNotExistError,
     WorkflowAlreadyExistError,
 )
-from testapi.common.service import UserService
+from api_framework.user.services import UserService
 import pytest
 
 
@@ -120,12 +120,10 @@ class TestWorkflowService:
         THEN it gets the workflows from database
         """
         w = UserService(session=database_session)
-        searched_workflows = w.get_all_users(search="new")
+        searched_workflows = w.get_user(search="new")
         assert len(searched_workflows) == 1
 
-        for actual_workflow, expected_workflow in zip(
-            w.get_all_users(), workflow_data
-        ):
+        for actual_workflow, expected_workflow in zip(w.get_user(), workflow_data):
             assert actual_workflow.model_dump()["name"] == expected_workflow["name"]
 
     def test_get_workflow(self, database_session, workflow_data):

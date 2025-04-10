@@ -1,12 +1,12 @@
 services:
 
   postgres:
-    image: postgres
-    container_name: testapi_postgres_1
+    image: postgres:17-alpine
+    container_name: api_postgres_1
     environment:
-      - POSTGRES_USER=testapi
-      - POSTGRES_PASSWORD=testapi
-      - POSTGRES_DB=testapi
+      - POSTGRES_USER=api
+      - POSTGRES_PASSWORD=api
+      - POSTGRES_DB=api
       - PGPORT=5432
       - PGDATA=/var/lib/postgresql/data/pgdata
     volumes:
@@ -17,12 +17,12 @@ services:
       - local-test-net
 
   api:
-    image: testapi
+    image: user_api
     build:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - ./testapi:/app/testapi
+      - ./api_framework:/app/api_framework
 #      - ~/.aws:/home/appuser/.aws
     networks:
       - local-test-net
@@ -33,9 +33,9 @@ services:
       WORKERS: 1
       API_LOG_TYPE: "standard"
       DEBUG_MODE: True
-      DATABASE_URL: "postgresql+psycopg2://testapi:{pswd}@testapi_postgres_1:5432/testapi"
-      DATABASE_PASSWORD: testapi
-    command: gunicorn --timeout 60 --config testapi/gunicorn_config.py 'testapi.app:app' --reload
+      DATABASE_URL: "postgresql+psycopg2://api:{pswd}@api_postgres_1:5432/api"
+      DATABASE_PASSWORD: api
+    command: gunicorn --timeout 60 --config api_framework/gunicorn_config.py 'api_framework.app:app' --reload
 
 networks:
   local-test-net:

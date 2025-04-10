@@ -2,7 +2,7 @@
 **
 
 # Allow only these directories
-!testapi
+!api_framework
 !Dockerfile
 !pyproject.toml
 !uv.lock

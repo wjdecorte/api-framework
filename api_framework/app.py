@@ -7,12 +7,13 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, status
 from fastapi.responses import JSONResponse
 
-from testapi import app_settings
-from testapi.exceptions import ALL_EXCEPTIONS
-from testapi.migrations.alembic_runner import upgrade
-from testapi.common.schemas import ValidationErrorSchema
-from testapi.common.routers import router as common_router
-from testapi.logger_conf import log_config
+from api_framework import app_settings
+from api_framework.exceptions import ALL_EXCEPTIONS
+from api_framework.migrations.alembic_runner import upgrade
+from api_framework.common.schemas import ValidationErrorSchema
+from api_framework.common.routers import router as common_router
+from api_framework.user.routers import router as user_router
+from api_framework.logger_conf import log_config
 
 
 @asynccontextmanager
@@ -27,8 +28,8 @@ dictConfig(log_config)
 
 app = FastAPI(
     openapi_url=f"{app_settings.base_url_prefix}/openapi.json",
-    title="Test API",
-    description="A API Framework for all API's",
+    title=app_settings.title,
+    description=app_settings.description,
     version=app_settings.version,
     docs_url=f"{app_settings.base_url_prefix}/docs",
     redoc_url=f"{app_settings.base_url_prefix}/redoc",
@@ -45,9 +46,9 @@ logger = logging.getLogger(app_settings.logger_name)
 
 logger.info("Register Routers")
 
-app.include_router(
-    common_router, prefix=f"{app_settings.base_url_prefix}/common/api/v1"
-)
+app.include_router(common_router, prefix=f"{app_settings.base_url_prefix}/common")
+
+app.include_router(user_router, prefix=f"{app_settings.base_url_prefix}/user")
 
 
 @app.exception_handler(Exception)
@@ -64,7 +65,7 @@ async def exception_handler(request: Request, error):
         http_code = error.http_code
     else:
         d = {
-            "code": "testapi.error.999",
+            "code": "api.error.999",
             "type": type(error).__name__,
             "message": str(error),
             "traceback": traceback.format_exc(),

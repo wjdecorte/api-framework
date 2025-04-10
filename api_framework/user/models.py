@@ -1,32 +1,10 @@
-from datetime import datetime
 from enum import StrEnum, IntEnum
 from typing import Annotated
 
-from sqlalchemy.orm import declared_attr
-from sqlmodel import SQLModel, Field, Relationship
-from pydantic import AfterValidator, ConfigDict
-from pydantic.alias_generators import to_camel
-from caseconverter import snakecase
+from pydantic import AfterValidator
+from sqlmodel import Field, Relationship
 
-
-class AppBaseModel(SQLModel):
-    @declared_attr
-    def __tablename__(cls) -> str:
-        return snakecase(cls.__name__)
-
-    id: int | None = Field(default=None, primary_key=True)
-    create_date: datetime = Field(default_factory=datetime.now)
-    modify_date: datetime = Field(
-        default_factory=datetime.now,
-        sa_column_kwargs={"onupdate": datetime.now},
-    )
-
-    model_config = ConfigDict(
-        alias_generator=to_camel,
-        populate_by_name=True,
-        protected_namespaces=(),
-        from_attributes=True,
-    )
+from api_framework.common.models import AppBaseModel
 
 
 class UserStatus(StrEnum):
@@ -53,11 +31,11 @@ def address_type_valid_values(value: int):
     return value
 
 
-class AppBaseTableModel(AppBaseModel):
-    __table_args__ = {"schema": "testapi"}
+class UserBaseTableModel(AppBaseModel):
+    __table_args__ = {"schema": "user_example"}
 
 
-class User(AppBaseTableModel, table=True):
+class User(UserBaseTableModel, table=True):
     username: str = Field(max_length=100, unique=True, nullable=False)
     description: str = Field(max_length=250, nullable=True)
     email: str = Field(max_length=250, nullable=True)
@@ -74,7 +52,7 @@ class User(AppBaseTableModel, table=True):
     ]
 
 
-class UserAddress(AppBaseTableModel, table=True):
+class UserAddress(UserBaseTableModel, table=True):
     type: Annotated[
         int,
         Field(nullable=False, unique=True),
@@ -86,7 +64,7 @@ class UserAddress(AppBaseTableModel, table=True):
     state: str = Field(max_length=250, nullable=False)
     postal_code: str = Field(max_length=10, nullable=False)
     user_id: int = Field(
-        foreign_key=f"{AppBaseTableModel.__table_args__.get('schema')}.user.id",
+        foreign_key=f"{UserBaseTableModel.__table_args__.get('schema')}.user.id",
         nullable=False,
     )
-    user: User = Relationship(back_populates="inputs")
+    user: User = Relationship(back_populates="addresses")

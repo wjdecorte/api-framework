@@ -5,7 +5,7 @@ from alembic.config import Config
 from alembic import command
 from alembic.util.exc import CommandError
 
-path = os.path.join(os.getcwd(), "testapi", "migrations", "alembic.ini")
+path = os.path.join(os.getcwd(), "api_framework", "migrations", "alembic.ini")
 
 alembic_cfg = Config(path)
 logger = logging.getLogger(__name__)

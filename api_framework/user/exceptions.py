@@ -1,17 +1,11 @@
 from dataclasses import dataclass
 
-from testapi.exceptions import AppBaseError
+from api_framework.common.exceptions import CommonBaseError
+from api_framework.exceptions import AppBaseError
 
 
 @dataclass
-class TestBaseError(AppBaseError):
-    @property
-    def code(self):
-        return f"workflows.error.{self.error_number}"
-
-
-@dataclass
-class UserDoesNotExistError(TestBaseError):
+class UserDoesNotExistError(CommonBaseError):
     message: str = "User does not exist"
     http_code: int = 404
 

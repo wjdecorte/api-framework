@@ -3,128 +3,85 @@
 # Common endpoints
 
 # healthcheck
-GET {{api_host}}/barrelapi/common/api/v1/healthcheck
+GET {{api_host}}/framework/api/v1/common/healthcheck
 Accept: application/json
 
 ###
 
 # info
-GET {{api_host}}/barrelapi/common/api/v1/info
+GET {{api_host}}/framework/api/v1/common/info
 Accept: application/json
 
 ###
 
-# Workflow endpoints
+# User endpoints
+GET {{api_host}}/framework/api/v1/user/healthcheck
+Accept: application/json
 
-POST {{api_host}}/barrelapi/workflows/api/v1/create-workflow
+###
+
+POST {{api_host}}/framework/api/v1/user/create
 Content-Type: application/json
 
 {
-  "name": "test_workflow_v6",
+  "username": "jdoe65",
   "description": "this is another test",
-  "steps": [
+  "email": "user1@example.com",
+  "first_name": "John",
+  "last_name": "Doe",
+  "addresses": [
     {
-      "name": "step2",
-      "type": "resolve",
-      "index": 1,
-      "inputs": {
-        "mapping": "a"
-      }
+      "type": 1,
+      "address_line_1": "123 Main St",
+      "address_line_2": null,
+      "city": "New York",
+      "state": "NY",
+      "postal_code": "01234"
     }
   ],
-  "inputs": [
-    {
-      "name": "dataset",
-      "type": "Dataset"
-    }
-  ],
-  "status": "draft"
+  "phone_number": "555-555-1234",
+  "status": "active"
 }
 
 ###
 
-PUT {{api_host}}/barrelapi/workflows/api/v1/update-workflow
+PUT {{api_host}}/framework/api/v1/user/update
 Content-Type: application/json
 
 {
-  "name": "test_workflow_v6",
-  "description": "this is update test",
-  "steps": [
+  "username": "jdoe65",
+  "description": "this is another test",
+  "email": "user1@example.com",
+  "first_name": "John",
+  "last_name": "Doe",
+  "addresses": [
     {
-      "name": "step1",
-      "type": "resolve",
-      "index": 0,
-      "inputs": {
-        "mapping1": "a",
-        "mapping2": "b"
-      }
-    },
-    {
-      "name": "step2",
-      "type": "renamer",
-      "index": 1,
-      "inputs": {
-        "mapping1": "a",
-        "mapping2": "b"
-      }
+      "type": 3,
+      "address_line_1": "PO Box 123",
+      "address_line_2": null,
+      "city": "New York",
+      "state": "NY",
+      "postal_code": "01234-0123"
     }
   ],
-  "inputs": [
-    {
-      "name": "dataset",
-      "type": "Dataset"
-    }
-  ],
-  "status": "published"
+  "phone_number": "555-555-4321",
+  "status": "active"
 }
 
-### delete workflows
+###
 
-DELETE {{api_host}}/barrelapi/workflows/api/v1/delete-workflow/test_workflow_v6
+DELETE {{api_host}}/framework/api/v1/user/delete/jdoe65
 
-### get all workflows
+###
 
-GET {{api_host}}/barrelapi/workflows/api/v1/get-workflows
+GET {{api_host}}/framework/api/v1/user
 Accept: application/json
 
-### get all workflow by search
-GET {{api_host}}/barrelapi/workflows/api/v1/get-workflows?search=test_workflow_v
+###
+GET {{api_host}}/framework/api/v1/user?search=jdoe
 Accept: application/json
 
-### get workflow
+###
 
-GET {{api_host}}/barrelapi/workflows/api/v1/get-workflow/test_workflow_v3
+GET {{api_host}}/framework/api/v1/user/jdoe65
 Accept: application/json
-
-### migrate list of pipeline id's
-
-PATCH {{api_host}}/barrelapi/workflows/api/v1/migrate-workflow
-Content-Type: application/json
-
-{
-    "workflows": [
-        "spr:bz:pipeline::isc-jan:8",
-        "spr:bz:pipeline::dnl-edi-exporteligd:2",
-        "spr:bz:pipeline::fineos-demo-ml-infer:1",
-        "spr:bz:pipeline::isc-step:2",
-        "spr:bz:pipeline::ldex-bem:6",
-        "spr:bz:pipeline::nb-workflow:12",
-        "spr:bz:pipeline::new-business-v2-resolve:1",
-        "spr:bz:pipeline::new-business-eoi:8",
-        "spr:bz:pipeline::new-business-eoi-v2-resovle:2",
-        "spr:bz:pipeline::new-business-eoi:9",
-        "spr:bz:pipeline::dnlite-workflow:1",
-        "spr:bz:pipeline::dnl-edi-exporteligd:6",
-        "spr:bz:pipeline::enav-updated-workflow:39",
-        "spr:bz:pipeline::member-maintenance-change-file-and-eoi:11"
-    ]
-}
-
-### migrate workflow all
-
-PATCH {{api_host}}/barrelapi/workflows/api/v1/migrate-workflow
-Accept: application/json
-
-{
-    "workflows": null
-}

@@ -1,4 +1,4 @@
-from testapi import app_settings
+from api_framework import app_settings
 
 
 class TestCommonRoutes:
@@ -11,7 +11,7 @@ class TestCommonRoutes:
         expected_response = info_data.get("response_data", {})
         expected_status_code = info_data.get("response_code", 200)
         actual_response = client.get(
-            f"{app_settings.base_url_prefix}/common/api/v1/info"
+            f"{app_settings.base_url_prefix}/api/v1/common/info"
         )
         assert actual_response.status_code == expected_status_code
         assert actual_response.json() == expected_response
@@ -25,7 +25,7 @@ class TestCommonRoutes:
         expected_response = {"msg": "Happy"}
         expected_status_code = 200
         actual_response = client.get(
-            f"{app_settings.base_url_prefix}/common/api/v1/healthcheck"
+            f"{app_settings.base_url_prefix}/api/v1/common/healthcheck"
         )
         assert actual_response.status_code == expected_status_code
         assert actual_response.json() == expected_response

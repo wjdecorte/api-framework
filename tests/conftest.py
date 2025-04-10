@@ -8,13 +8,11 @@ import toml
 from starlette.testclient import TestClient
 from sqlmodel import SQLModel, Session
 
-from testapi.app import app as fastapi_app
-from testapi.exceptions import InvalidActionError
-from testapi.workflows import models
+from api_framework.app import app as fastapi_app
+from api_framework.exceptions import InvalidActionError
+from api_framework.user import models
 from testcontainers.postgres import PostgresContainer
 
-
-COPIED_WORKFLOW_DESCRIPTION = "This is copied test workflow"
 
 WORKFLOW_NOT_EXIST_CODE = "workflows.error.017"
 
@@ -55,15 +53,10 @@ def info_data():
             "version": version,
             "aws_default_region": "us-east-1",
             "aws_endpoint_url": None,
-            "base_url_prefix": "/testapi",
+            "base_url_prefix": "/framework/api/v1",
             "debug_mode": False,
-            "database_url": "postgresql+psycopg2://testapi:{pswd}@barrelapi_postgres_1:5432/testapi",
+            "database_url": "postgresql+psycopg2://api:{pswd}@api_postgres_1:5432/api",
             "api_log_type": "json",
-            "load_balancer_host": "http://localhost",
-            "elasticsearch_host": None,
-            "elasticsearch_port": 9200,
-            "elasticsearch_user": None,
-            "elasticsearch_use_ssl": False,
             "json_log_format": """{
         "Name":            "name",
         "Levelno":         "levelno",
@@ -97,7 +90,7 @@ def database_session():
         engine = create_engine(connection_url)
 
         with engine.connect() as conn:
-            conn.execute(text("CREATE SCHEMA IF NOT EXISTS workflow;"))
+            conn.execute(text("CREATE SCHEMA IF NOT EXISTS user_example;"))
             conn.execute(text("commit;"))
 
         # Create tables in the database
@@ -112,8 +105,8 @@ def database_session():
 @pytest.fixture(scope="function")
 def headers():
     return {
-        "x-spr-client-id": f"spr:clt::{uuid4()}",
-        "x-spr-user-id": f"spr:user::{uuid4()}",
+        "x_auth_key": f"spr:clt::{uuid4()}",
+        "x_tenant_id": f"spr:user::{uuid4()}",
     }
 
 

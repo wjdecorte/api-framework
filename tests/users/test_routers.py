@@ -1,6 +1,6 @@
 from unittest.mock import patch
 
-from testapi import app_settings
+from api_framework import app_settings
 
 
 class TestRouters:

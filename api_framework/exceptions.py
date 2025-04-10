@@ -1,4 +1,4 @@
-"""Defined exceptions for the testapi Service"""
+"""Defined exceptions for the api_framework Service"""
 
 from dataclasses import dataclass
 from typing import Dict, Type
@@ -15,7 +15,7 @@ class AppBaseError(Exception):
 
     @property
     def code(self):
-        return f"testapi.error.{self.error_number}"
+        return f"api.error.{self.error_number}"
 
     @classmethod
     def __init_subclass__(cls, **kwargs):

@@ -1,4 +1,4 @@
-from testapi import app_settings
+from api_framework import app_settings
 
 log_level = "DEBUG" if app_settings.debug_mode else app_settings.log_level
 
