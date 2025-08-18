@@ -18,9 +18,9 @@ services:
 
   api:
     image: user_api
-    build:
-      context: .
-      dockerfile: Dockerfile
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
     volumes:
       - ./api_framework:/app/api_framework
 #      - ~/.aws:/home/appuser/.aws

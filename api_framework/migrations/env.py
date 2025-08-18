@@ -7,6 +7,18 @@ from alembic import context
 
 from api_framework import app_settings
 from api_framework.user.models import User, UserAddress  # noqa
+# from api_framework.block.models import (
+#     Block,
+#     BlockGeometry,
+#     BlockRelationship,
+#     PageBlock,
+#     LineBlock,
+#     WordBlock,
+#     TableBlock,
+#     CellBlock,
+#     SelectionElementBlock,
+#     MergedCellBlock,
+# )
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

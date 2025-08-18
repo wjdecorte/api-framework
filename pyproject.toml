@@ -1,9 +1,9 @@
 [project]
 name = "api-framework"
-version = "0.1.0"
+version = "0.1.1"
 description = "A Common API framework"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.13"
 dependencies = [
     "case-converter==1.*",
     "alembic==1.*",

@@ -85,3 +85,12 @@ Accept: application/json
 
 GET {{api_host}}/framework/api/v1/user/jdoe65
 Accept: application/json
+
+### Create document presigned url
+
+GET {{hub_host}}/hub/api/v1/create_document_presigned_url
+    ?user_id=5
+    &document_type_id=130
+    &document_extension=PDF
+    &document_name=test_extension_change.PDF
+Accept: application/json
