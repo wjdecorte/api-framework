@@ -82,3 +82,6 @@ environment.yml
 /pgdata_pipelines/
 /data/
 /elasticsearch_data/
+
+# Specstory
+.specstory/

@@ -21,13 +21,15 @@ dependencies = [
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
-[tool.uv]
-dev-dependencies  = [
+[dependency-groups]
+dev = [
     "pytest==8.*",
     "toml==0.*",
     "pytest-cov==6.*",
     "testcontainers==4.*",
     "pytest-asyncio==0.*",
+    "ptpython>=3.0.31",
+    "tabula>=1.0.5",
 ]
 
 [tool.pytest.ini_options]
